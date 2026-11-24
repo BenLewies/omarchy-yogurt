@@ -1,3 +1,12 @@
+// Keep future/optional native actions reachable without duplicating primary controls.
+function extraActions(entries, labels) {
+    var result=[]
+    for(var i=0; entries && i<entries.length; i++) {
+        var e=entries[i]
+        if (!e.isSeparator && !e.hasChildren && e.enabled && !roleFor(e.text, labels)) result.push(e)
+    }
+    return result
+}
 function modeFor(connected, recording, paused) { return !connected ? "offline" : recording ? (paused ? "paused" : "recording") : "ready" }
 function isYogurt(item) {
     var identity = String(item.id || "") + " " + String(item.title || "") + " " + String(item.tooltipTitle || "")
@@ -30,4 +39,4 @@ function safeCommand(value) {
     for (var i = 0; i < value.length; i++) if (typeof value[i] !== "string" || value[i].length > 2048 || value[i].indexOf("\u0000") >= 0) return []
     return value
 }
-if (typeof module !== "undefined") module.exports = {modeFor:modeFor,isYogurt:isYogurt,literal:literal,tooltipText:tooltipText,roleFor:roleFor,pick:pick,elapsed:elapsed,duration:duration,safeCommand:safeCommand}
+if (typeof module !== "undefined") module.exports = {extraActions:extraActions,modeFor:modeFor,isYogurt:isYogurt,literal:literal,tooltipText:tooltipText,roleFor:roleFor,pick:pick,elapsed:elapsed,duration:duration,safeCommand:safeCommand}

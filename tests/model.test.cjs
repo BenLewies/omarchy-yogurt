@@ -16,3 +16,8 @@ assert.equal(m.modeFor(true,false,false),'ready');
 assert.equal(m.modeFor(true,true,false),'recording');
 assert.equal(m.modeFor(true,true,true),'paused');
 assert.equal(m.modeFor(false,false,false),'offline');
+const extra={text:'Join and record',enabled:true,hasChildren:false,isSeparator:false};
+const known={text:'Ask Yogurt',enabled:true,hasChildren:false,isSeparator:false};
+assert.deepEqual(m.extraActions([known,extra,{text:'Recording · Example',enabled:false},{text:'Recent',enabled:true,hasChildren:true},{isSeparator:true,enabled:true}],labels),[extra]);
+assert.equal(m.roleFor('Settings…',labels),'settings');assert.equal(m.roleFor('Quit Yogurt',labels),'quit');
+assert.equal(m.pick([known],'ask',labels),known);

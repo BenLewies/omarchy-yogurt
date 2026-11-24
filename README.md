@@ -41,6 +41,14 @@ A recording indicator and live session timer appear in the bar. Open the panel
 for a larger timer and a clear recording or paused state. No guessing whether
 you pressed the button.
 
+### 🎨 A toolbar that makes sense
+
+Your library and Ask Yogurt sit together for everyday navigation. Settings has
+its own space, and Quit is kept at the far right with a quieter red accent.
+Every action has a crisp vector icon, a visible label and a helpful hover
+hint. Recording stays in its own prominent area above, with matching icons for
+start, pause, resume and stop.
+
 ### ✨ Your conversations, close at hand
 
 See your three most recent sessions, their durations and whether they’re saved,
@@ -101,7 +109,10 @@ Look for the Yogurt icon in your bar:
 | **Start recording** | Ask Yogurt to begin capturing audio |
 | **Pause / Resume** | Control the current recording |
 | **Stop & save** | Ask Yogurt to finish the recording |
-| **More controls** | Access additional actions from Yogurt’s native menu |
+| **Library** | Open Yogurt’s library |
+| **Ask** | Ask Yogurt about your conversations |
+| **Settings** | Open Yogurt’s preferences |
+| **Quit** | Quit Yogurt (separated from the everyday controls) |
 | **Escape** | Close the panel |
 
 **Recording starts only when you choose to start it.** Adding the plugin does not
@@ -160,7 +171,7 @@ changing your library.
 
 **A control is unavailable?**  
 The plugin only enables controls actually published by Yogurt. Open Yogurt to
-complete setup, and check **More controls**. Native menu phrases are recognised
+complete setup, and check that the relevant toolbar icon is enabled. Native menu phrases are recognised
 across Yogurt’s bundled languages; the panel currently ships English strings
 with a translation-ready catalogue.
 

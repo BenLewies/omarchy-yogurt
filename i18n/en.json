@@ -26,11 +26,16 @@
   "failed": "Needs attention",
   "controls.loading": "Connecting to Yogurt’s recording controls…",
   "library.unavailable": "Your library is unavailable. Yogurt’s controls still work.",
-  "menu": "More controls",
-  "back": "Back",
   "refresh": "Refresh",
   "close": "Close",
   "about": "Unofficial companion for Yogurt",
   "launch.error": "Could not open Yogurt. Check the launch command in the plugin settings.",
-  "privacy.detail": "Titles hidden in this panel. Your recordings stay in Yogurt."
+  "privacy.detail": "Titles hidden in this panel. Your recordings stay in Yogurt.",
+  "toolbar.library": "Library",
+  "toolbar.ask": "Ask",
+  "toolbar.settings": "Settings",
+  "toolbar.quit": "Quit",
+  "ask": "Ask Yogurt",
+  "settings": "Open Yogurt settings",
+  "quit": "Quit Yogurt"
 }

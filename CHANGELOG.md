@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.0
+
+- Added a labelled vector-icon toolbar for Library, Ask, Settings and Quit.
+- Separated everyday navigation from preferences and exit controls.
+- Added matching icons to recording, pause, resume and stop buttons.
+- Kept optional native actions accessible without a hidden More controls list.
+- Added native menu translations for the new toolbar actions.
+- Updated the interface preview and feature guide.
+
 ## 1.0.0
 
 - Recording status and elapsed session time directly in the Omarchy bar.

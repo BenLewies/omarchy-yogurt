@@ -17,7 +17,7 @@ FocusScope {
     property bool hideTitles:false
     property double now:Date.now()
     property string errorText:""
-    property bool moreControls:false
+    property var extraActions:[]
     signal request(string role)
     signal openApp()
     signal dismiss()
@@ -65,14 +65,29 @@ FocusScope {
                 Layout.fillWidth:true;spacing:Style.space(8)
                 Button {
                     Layout.fillWidth:true;verticalPadding:Style.space(11);bordered:true;focusable:true
-                    text:root.mode==="offline"?strings.t("open"):root.recording?strings.t("stop"):strings.t("start")
+                    id:primaryAction
+                    text:"";implicitHeight:Style.space(44)
+                    readonly property string actionLabel:root.mode==="offline"?strings.t("open"):root.recording?strings.t("stop"):strings.t("start")
+                    Accessible.name:actionLabel
+                    Row {
+                        anchors.centerIn:parent;spacing:Style.space(9)
+                        ToolIcon{anchors.verticalCenter:parent.verticalCenter;kind:root.mode==="offline"?"library":root.recording?"stop":"record";color:primaryAction.foreground;width:Style.space(19);height:width}
+                        Text{anchors.verticalCenter:parent.verticalCenter;text:primaryAction.actionLabel;textFormat:Text.PlainText;color:primaryAction.foreground;font.pixelSize:Style.font.body}
+                    }
                     foreground:root.mode==="recording"?"#fb7185":"#c4b5fd"
                     enabled:root.mode==="offline"||!!(root.recording?root.roleEntries.stop:root.roleEntries.start)
                     onClicked:{if(root.mode==="offline")root.openApp();else root.request(root.recording?"stop":"start")}
                 }
                 Button {
                     visible:root.recording;verticalPadding:Style.space(11);bordered:true;focusable:true
-                    text:strings.t(root.mode==="paused"?"resume":"pause")
+                    id:pauseAction
+                    text:"";implicitHeight:Style.space(44);implicitWidth:Style.space(104)
+                    Accessible.name:strings.t(root.mode==="paused"?"resume":"pause")
+                    Row {
+                        anchors.centerIn:parent;spacing:Style.space(7)
+                        ToolIcon{anchors.verticalCenter:parent.verticalCenter;kind:root.mode==="paused"?"play":"pause";color:pauseAction.foreground;width:Style.space(18);height:width}
+                        Text{anchors.verticalCenter:parent.verticalCenter;text:strings.t(root.mode==="paused"?"resume":"pause");textFormat:Text.PlainText;color:pauseAction.foreground;font.pixelSize:Style.font.body}
+                    }
                     enabled:!!(root.mode==="paused"?root.roleEntries.resume:root.roleEntries.pause)
                     onClicked:root.request(root.mode==="paused"?"resume":"pause")
                 }
@@ -116,19 +131,40 @@ FocusScope {
                 }
                 Text{visible:!(root.library.recent||[]).length;Layout.fillWidth:true;text:strings.t(root.library.available?"empty":"library.unavailable");textFormat:Text.PlainText;color:root.muted;font.pixelSize:Style.font.body;wrapMode:Text.WordWrap}
             }
+            // Navigation first; preferences and exit are separated from daily actions.
             RowLayout {
-                Layout.fillWidth:true
-                Button{Layout.fillWidth:true;text:strings.t("library");leftAlign:true;focusable:true;onClicked:root.openApp()}
-                Button{text:root.moreControls?strings.t("back"):strings.t("menu");focusable:true;visible:root.mode!=="offline";onClicked:root.moreControls=!root.moreControls}
+                Layout.fillWidth:true;spacing:Style.space(7)
+                ToolbarButton {
+                    kind:"library";label:strings.t("toolbar.library");description:strings.t("library")
+                    onClicked:root.openApp()
+                }
+                ToolbarButton {
+                    kind:"ask";label:strings.t("toolbar.ask");description:strings.t("ask")
+                    enabled:!!root.roleEntries.ask && root.roleEntries.ask.enabled
+                    onClicked:root.request("ask")
+                }
+                Item {Layout.fillWidth:true}
+                Rectangle {Layout.preferredWidth:1;Layout.preferredHeight:Style.space(25);color:root.ink;opacity:.12}
+                ToolbarButton {
+                    kind:"settings";label:strings.t("toolbar.settings");description:strings.t("settings")
+                    enabled:!!root.roleEntries.settings && root.roleEntries.settings.enabled
+                    onClicked:root.request("settings")
+                }
+                ToolbarButton {
+                    kind:"quit";label:strings.t("toolbar.quit");description:strings.t("quit");destructive:true
+                    enabled:!!root.roleEntries.quit && root.roleEntries.quit.enabled
+                    onClicked:{root.request("quit");root.dismiss()}
+                }
             }
-            ColumnLayout {
-                visible:root.moreControls;Layout.fillWidth:true;spacing:Style.space(3)
+            Flow {
+                visible:root.extraActions.length>0
+                Layout.fillWidth:true;spacing:Style.space(7)
                 Repeater {
-                    model:root.nativeEntries
-                    delegate:Button {
+                    model:root.extraActions
+                    delegate:ToolbarButton {
                         required property var modelData
-                        Layout.fillWidth:true;visible:!modelData.isSeparator&&!modelData.hasChildren
-                        text:Model.tooltipText(modelData.text);enabled:modelData.enabled;leftAlign:true;focusable:true
+                        kind:"calendar";label:Model.literal(modelData.text,24);description:Model.literal(modelData.text)
+                        enabled:modelData.enabled
                         onClicked:root.nativeAction(modelData)
                     }
                 }

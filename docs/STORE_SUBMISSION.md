@@ -9,7 +9,7 @@ cannot be listed in the public store.
 **Name:** Yogurt Bar  
 **Repository:** https://github.com/BenLewies/omarchy-yogurt  
 **Plugin ID:** `bjl.yogurt`  
-**Version:** `1.0.0`  
+**Version:** `1.1.0`  
 **Category:** Productivity  
 **Suggested keywords:** Yogurt, meeting notes, recording
 
@@ -42,7 +42,7 @@ meeting titles can be hidden using the privacy setting.
    node tests/model.test.cjs
    python tests/check_package.py
    ```
-4. Publish the `v1.0.0` release with the existing changelog.
+4. Publish the `v1.1.0` release with the existing changelog.
 5. Open the submission link from the [official publishing guide](https://plugins.omarchy.org/publish.html)
    and submit the repository URL, listing copy and preview.
 

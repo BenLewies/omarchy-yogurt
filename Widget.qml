@@ -47,7 +47,10 @@ BarWidget {
         pause: Model.pick(nativeEntries, "pause", NativeLabels.labels),
         resume: Model.pick(nativeEntries, "resume", NativeLabels.labels),
         stop: Model.pick(nativeEntries, "stop", NativeLabels.labels),
-        open: Model.pick(nativeEntries, "open", NativeLabels.labels)
+        open: Model.pick(nativeEntries, "open", NativeLabels.labels),
+        ask: Model.pick(nativeEntries, "ask", NativeLabels.labels),
+        settings: Model.pick(nativeEntries, "settings", NativeLabels.labels),
+        quit: Model.pick(nativeEntries, "quit", NativeLabels.labels)
     })
     function focusedWidget() {
         var peers = root.bar && root.bar.moduleWidgets ? root.bar.moduleWidgets(root.moduleName) : [root]
@@ -56,7 +59,7 @@ BarWidget {
         return root
     }
     function open() { menuOpen=true; refresh(); Qt.callLater(function(){view.forceActiveFocus()}) }
-    function close() { menuOpen=false; view.moreControls=false }
+    function close() { menuOpen=false }
     function toggle() { if(menuOpen)close();else open() }
     function refresh() { if (!poll.running) poll.running=true }
     function invokeRole(role) {
@@ -123,7 +126,7 @@ BarWidget {
             id:view;width:parent.width
             mode:root.mode;accent:root.accent;elapsed:root.elapsed;library:root.library
             hideTitles:root.hideTitles;now:root.now;roleEntries:root.roleEntries
-            nativeEntries:root.nativeEntries;errorText:root.errorText
+            nativeEntries:root.nativeEntries;extraActions:Model.extraActions(root.nativeEntries, NativeLabels.labels);errorText:root.errorText
             onRequest:role=>root.invokeRole(role)
             onOpenApp:root.openYogurt()
             onDismiss:root.close()
