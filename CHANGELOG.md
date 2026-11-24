@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Setup picks the official AppImage for the computer's architecture. ARM64 (aarch64) is prepared and is offered once an official Yogurt release includes `Yogurt-linux-arm64.AppImage` and its checksum is pinned.
+
 ## 1.2.0
 
 - Added Set up Yogurt to the disconnected panel: guided installation, tray repair and launch.
