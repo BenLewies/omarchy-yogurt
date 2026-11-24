@@ -139,9 +139,13 @@ You only need to add the settings you want to change:
 
 | Setting | Default | Use it for |
 | --- | --- | --- |
-| `hideTitles` | `false` | Replace meeting titles with “Recorded conversation” |
+| `hideTitles` | `false` | Hide recent titles and calendar action titles, including tooltips and accessibility text |
 | `profileDirectory` | Your XDG config folder’s `Yogurt` directory | Read a non-standard Yogurt profile |
 | `launchCommand` | `["gtk-launch", "yogurt"]` | Open your preferred Yogurt installation |
+
+With `hideTitles` enabled, optional native actions use the label **Meeting action**.
+Their buttons still work; their original titles return when you disable the setting.
+This setting covers the Yogurt Bar panel. Opening Yogurt uses Yogurt’s own privacy settings.
 
 If you use an AppImage without a desktop launcher, set `launchCommand` to its
 absolute path in an array, for example `["/home/you/Applications/Yogurt.AppImage"]`.

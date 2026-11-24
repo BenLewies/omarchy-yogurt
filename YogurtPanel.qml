@@ -161,7 +161,9 @@ FocusScope {
                     model:root.extraActions
                     delegate:ToolbarButton {
                         required property var modelData
-                        kind:"calendar";label:Model.literal(modelData.text,24);description:Model.literal(modelData.text)
+                        readonly property var presentation:Model.extraActionText(modelData.text,root.hideTitles,
+                            strings.t("toolbar.meeting"),strings.t("toolbar.meeting.description"))
+                        kind:"calendar";label:presentation.label;description:presentation.description
                         enabled:modelData.enabled
                         onClicked:root.nativeAction(modelData)
                     }

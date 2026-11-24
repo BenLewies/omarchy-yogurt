@@ -7,6 +7,12 @@ function extraActions(entries, labels) {
     }
     return result
 }
+// Extra native actions can contain calendar titles. Mask every presentation
+// surface together; keep the original entry only for invoking its native action.
+function extraActionText(text, hideTitles, hiddenLabel, hiddenDescription) {
+    return hideTitles ? {label:hiddenLabel, description:hiddenDescription}
+                      : {label:literal(text,24), description:literal(text)}
+}
 function modeFor(connected, recording, paused) { return !connected ? "offline" : recording ? (paused ? "paused" : "recording") : "ready" }
 function isYogurt(item) {
     var identity = String(item.id || "") + " " + String(item.title || "") + " " + String(item.tooltipTitle || "")
@@ -39,4 +45,4 @@ function safeCommand(value) {
     for (var i = 0; i < value.length; i++) if (typeof value[i] !== "string" || value[i].length > 2048 || value[i].indexOf("\u0000") >= 0) return []
     return value
 }
-if (typeof module !== "undefined") module.exports = {extraActions:extraActions,modeFor:modeFor,isYogurt:isYogurt,literal:literal,tooltipText:tooltipText,roleFor:roleFor,pick:pick,elapsed:elapsed,duration:duration,safeCommand:safeCommand}
+if (typeof module !== "undefined") module.exports = {extraActionText:extraActionText,extraActions:extraActions,modeFor:modeFor,isYogurt:isYogurt,literal:literal,tooltipText:tooltipText,roleFor:roleFor,pick:pick,elapsed:elapsed,duration:duration,safeCommand:safeCommand}

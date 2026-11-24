@@ -21,3 +21,21 @@ const known={text:'Ask Yogurt',enabled:true,hasChildren:false,isSeparator:false}
 assert.deepEqual(m.extraActions([known,extra,{text:'Recording · Example',enabled:false},{text:'Recent',enabled:true,hasChildren:true},{isSeparator:true,enabled:true}],labels),[extra]);
 assert.equal(m.roleFor('Settings…',labels),'settings');assert.equal(m.roleFor('Quit Yogurt',labels),'quit');
 assert.equal(m.pick([known],'ask',labels),known);
+
+// The native calendar menu puts private event titles in enabled extra actions.
+const catalog=require('../i18n/en.json');
+const hiddenLabel=catalog['toolbar.meeting'],hiddenDescription=catalog['toolbar.meeting.description'];
+const secret='Confidential acquisition — <b>Board discussion</b> 🗓';
+let calendarFired=0;
+const calendar={text:secret,enabled:true,triggered:()=>calendarFired++};
+assert.equal(m.extraActions([entry,calendar],labels)[0],calendar);
+for(const title of [secret,'📅 Current meeting: Private medical appointment','Upcoming: Client contract negotiation']) {
+    const hidden=m.extraActionText(title,true,hiddenLabel,hiddenDescription);
+    assert.deepEqual(hidden,{label:hiddenLabel,description:hiddenDescription});
+    assert(!JSON.stringify(hidden).includes(title));
+    assert.equal(m.tooltipText(hidden.description),hiddenDescription);
+    assert.deepEqual(m.extraActionText(title,false,hiddenLabel,hiddenDescription),{label:title.slice(0,24),description:title.slice(0,160)});
+    assert.deepEqual(m.extraActionText(title,true,hiddenLabel,hiddenDescription),hidden);
+}
+m.extraActions([calendar],labels)[0].triggered();assert.equal(calendarFired,1);
+console.log('Passed: calendar title privacy, tooltip/accessibility presentation, toggling and unchanged native actions.');

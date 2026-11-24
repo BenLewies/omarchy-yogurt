@@ -12,3 +12,10 @@ for p in root.glob('*.qml'):
     assert 'Text.AutoText' not in text
 assert 'textFormat:Text.PlainText' in (root/'YogurtPanel.qml').read_text()
 print('Package files and entry points verified.')
+# Ensure the tested privacy presentation feeds every ToolbarButton text surface.
+panel=(root/'YogurtPanel.qml').read_text()
+assert 'Model.extraActionText(modelData.text,root.hideTitles,' in panel
+assert 'label:presentation.label;description:presentation.description' in panel
+button=(root/'ToolbarButton.qml').read_text()
+for binding in ['tooltipText:Model.tooltipText(description)','Accessible.name:label','Accessible.description:Model.literal(description)']:
+    assert binding in button,binding

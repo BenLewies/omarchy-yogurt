@@ -37,5 +37,7 @@
   "toolbar.quit": "Quit",
   "ask": "Ask Yogurt",
   "settings": "Open Yogurt settings",
-  "quit": "Quit Yogurt"
+  "quit": "Quit Yogurt",
+  "toolbar.meeting": "Meeting action",
+  "toolbar.meeting.description": "Activate this action in Yogurt. Meeting titles are hidden."
 }

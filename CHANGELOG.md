@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.1
+
+- Fixed Hide meeting titles exposing upcoming calendar titles through optional native action buttons, tooltips and accessibility text.
+- Kept the same native actions available under a generic Meeting action label while titles are hidden.
+- Added regression coverage for calendar titles, privacy toggling and native action invocation.
+
 ## 1.1.0
 
 - Added a labelled vector-icon toolbar for Library, Ask, Settings and Quit.
