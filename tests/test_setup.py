@@ -52,11 +52,12 @@ class SetupTests(unittest.TestCase):
             s.enable_tray(self.profile)
         self.assertIn('new',self.settings.read_text())
     def test_modified_download_rejected(self):
-        response=io.BytesIO(b'not the official app');response.url=s.URL
+        url,sha=s.release('x86_64')
+        response=io.BytesIO(b'not the official app');response.url=url
         with patch.object(s.urllib.request,'urlopen',return_value=response),self.assertRaises(ValueError):
-            s.download(self.root/'app')
+            s.download(self.root/'app',url,sha)
     def test_clean_install_creates_launcher_and_keeps_app_executable(self):
-        with patch.dict(os.environ,{'XDG_DATA_HOME':str(self.root)}),patch.object(s,'download',side_effect=lambda p:(p.write_bytes(b'app'),p.chmod(0o755))):
+        with patch.dict(os.environ,{'XDG_DATA_HOME':str(self.root)}),patch.object(s,'release',return_value=('https://x/app','sha')),patch.object(s,'download',side_effect=lambda p,u,h:(p.write_bytes(b'app'),p.chmod(0o755))):
             command=s.install_app()
             self.assertEqual(command,['gtk-launch','yogurt'])
             desktop=(self.root/'applications/yogurt.desktop').read_text()
@@ -65,7 +66,7 @@ class SetupTests(unittest.TestCase):
             self.assertTrue(app.stat().st_mode & 0o111)
             self.assertTrue((app.parent/'yogurt.png').is_file())
     def test_existing_desktop_is_not_replaced(self):
-        with patch.dict(os.environ,{'XDG_DATA_HOME':str(self.root)}),patch.object(s,'download',side_effect=lambda p:p.write_bytes(b'app')):
+        with patch.dict(os.environ,{'XDG_DATA_HOME':str(self.root)}),patch.object(s,'release',return_value=('https://x/app','sha')),patch.object(s,'download',side_effect=lambda p,u,h:p.write_bytes(b'app')):
             desktop=self.root/'applications/yogurt.desktop';desktop.parent.mkdir();desktop.write_text('existing')
             with self.assertRaises(FileExistsError):s.install_app()
             self.assertEqual(desktop.read_text(),'existing')
@@ -74,5 +75,17 @@ class SetupTests(unittest.TestCase):
             self.assertTrue(s.installed(['gtk-launch','yogurt']))
         with self.assertRaises(ValueError):s.installed('sh -c bad')
         self.assertEqual(s.desktop_quote('/a b/100%/$file'),r'"/a b/100%%/\$file"')
+
+    def test_release_per_architecture(self):
+        with patch.object(s.platform,'system',return_value='Linux'):
+            url,sha=s.release('x86_64');self.assertTrue(url.endswith('/Yogurt-linux-x86_64.AppImage'));self.assertEqual(len(sha),64)
+            self.assertEqual(s.release('AMD64'),(url,sha))
+            arm_name,arm_sha=s.RELEASES['aarch64'];self.assertEqual(arm_name,'Yogurt-linux-arm64.AppImage')
+            for m in ('aarch64','arm64'):
+                if arm_sha:self.assertTrue(s.release(m)[0].endswith('/Yogurt-linux-arm64.AppImage'))
+                else:
+                    with self.assertRaisesRegex(ValueError,'no aarch64 Linux build yet'):s.release(m)
+            with self.assertRaises(ValueError):s.release('riscv64')
+        with patch.object(s.platform,'system',return_value='Darwin'),self.assertRaises(ValueError):s.release('x86_64')
 
 if __name__=='__main__':unittest.main()

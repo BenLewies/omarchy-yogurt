@@ -104,7 +104,7 @@ whether to continue:
 - **Ready to connect?** Open Yogurt and complete its first-run checks and model
   downloads. Yogurt Bar connects as soon as its tray appears.
 
-The bundled installer supports Linux x86-64 and installs official Yogurt 0.3.72.
+The bundled installer supports Linux x86-64 and installs official Yogurt 0.3.72. ARM64 is ready in the installer and is offered once an official Yogurt release includes the arm64 AppImage and its checksum is pinned in `setup.py`.
 It never starts a recording, enables login autostart or replaces an existing app.
 Yogurt’s model downloads, hardware checks and permission choices happen in Yogurt.
 Already connected? You can skip setup entirely.

@@ -13,8 +13,25 @@ import time
 import urllib.request
 
 VERSION = '0.3.72'
-URL = f'https://github.com/FrigadeHQ/yogurt/releases/download/v{VERSION}/Yogurt-linux-x86_64.AppImage'
-SHA256 = '3b271e1ed84f8013fd5ddfaa93a9f02b8b87c09e621f85a84f555483fe141d0d'
+# Official AppImage and its pinned SHA-256 per machine architecture. An architecture without a checksum is not offered:
+# the arm64 AppImage arrives with FrigadeHQ/yogurt#153; fill in its file's checksum once a release carries it.
+RELEASES = {
+    'x86_64': ('Yogurt-linux-x86_64.AppImage', '3b271e1ed84f8013fd5ddfaa93a9f02b8b87c09e621f85a84f555483fe141d0d'),
+    'aarch64': ('Yogurt-linux-arm64.AppImage', None),
+}
+ARCH_ALIASES = {'AMD64': 'x86_64', 'amd64': 'x86_64', 'arm64': 'aarch64', 'ARM64': 'aarch64'}
+
+
+def release(machine=None):
+    """(url, sha256) of the official AppImage for this computer, or raises ValueError when there is none."""
+    machine = platform.machine() if machine is None else machine
+    arch = ARCH_ALIASES.get(machine, machine)
+    if platform.system() != 'Linux' or arch not in RELEASES:
+        raise ValueError('The official Yogurt Linux release requires an x86-64 or ARM64 computer.')
+    name, sha = RELEASES[arch]
+    if not sha:
+        raise ValueError(f'Official Yogurt {VERSION} has no {arch} Linux build yet. Install Yogurt yourself, then run setup again.')
+    return f'https://github.com/FrigadeHQ/yogurt/releases/download/v{VERSION}/{name}', sha
 MAX_DOWNLOAD = 1024 * 1024 * 1024
 
 
@@ -87,10 +104,10 @@ def enable_tray(profile):
     return True
 
 
-def download(target):
+def download(target, url, sha256):
     digest = hashlib.sha256()
     total = 0
-    with urllib.request.urlopen(URL, timeout=60) as response, target.open('xb') as out:
+    with urllib.request.urlopen(url, timeout=60) as response, target.open('xb') as out:
         if not response.url.startswith('https://'):
             raise ValueError('Refusing an insecure download redirect')
         while chunk := response.read(1024 * 1024):
@@ -101,7 +118,7 @@ def download(target):
             out.write(chunk)
             print(f'\rDownloading Yogurt… {total // (1024 * 1024)} MB', end='', flush=True)
     print()
-    if digest.hexdigest() != SHA256:
+    if digest.hexdigest() != sha256:
         raise ValueError('Download verification failed. Nothing has been installed.')
     target.chmod(0o755)
 
@@ -112,18 +129,17 @@ def desktop_quote(value):
 
 
 def install_app():
-    if platform.system() != 'Linux' or platform.machine() not in ('x86_64', 'AMD64'):
-        raise ValueError('The official Yogurt Linux release currently requires an x86-64 computer.')
+    url, sha256 = release()
     dest = data_home() / 'yogurt-bar' / f'Yogurt-{VERSION}.AppImage'
     dest.parent.mkdir(parents=True, exist_ok=True)
     if dest.exists():
         with dest.open('rb') as existing:
-            if hashlib.file_digest(existing, 'sha256').hexdigest() != SHA256:
+            if hashlib.file_digest(existing, 'sha256').hexdigest() != sha256:
                 raise ValueError('An existing managed download has changed; leaving it untouched.')
     else:
         with tempfile.TemporaryDirectory(prefix='.download-', dir=dest.parent) as tmp:
             part = Path(tmp) / 'Yogurt.AppImage'
-            download(part)
+            download(part, url, sha256)
             os.replace(part, dest)
     icon = dest.parent / 'yogurt.png'
     shutil.copyfile(Path(__file__).resolve().parent / 'assets/yogurt.png', icon)
@@ -152,7 +168,8 @@ def main():
     if not installed(command):
         if command != ['gtk-launch', 'yogurt']:
             raise ValueError('Your custom launcher was not found. Correct it before continuing; setup will not replace it.')
-        print(f'Official Yogurt {VERSION} for Linux · verified SHA-256 download\nSource: {URL}\nNo administrator access is needed.\n')
+        url, _ = release()
+        print(f'Official Yogurt {VERSION} for Linux · verified SHA-256 download\nSource: {url}\nNo administrator access is needed.\n')
         if not confirm('Download and install Yogurt for your account?'):
             return
         command = install_app()
