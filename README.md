@@ -43,8 +43,8 @@ you pressed the button.
 
 ### 🎨 A toolbar that makes sense
 
-Your library and Ask Yogurt sit together for everyday navigation. Settings has
-its own space, and Quit is kept at the far right with a quieter red accent.
+Your library and Ask Yogurt sit together for everyday navigation. The four buttons share an evenly spaced row, with Quit at the far right in a
+quieter red accent.
 Every action has a crisp vector icon, a visible label and a helpful hover
 hint. Recording stays in its own prominent area above, with matching icons for
 start, pause, resume and stop.
@@ -112,7 +112,7 @@ Look for the Yogurt icon in your bar:
 | **Library** | Open Yogurt’s library |
 | **Ask** | Ask Yogurt about your conversations |
 | **Settings** | Open Yogurt’s preferences |
-| **Quit** | Quit Yogurt (separated from the everyday controls) |
+| **Quit** | Quit Yogurt (at the far right of the toolbar) |
 | **Escape** | Close the panel |
 
 **Recording starts only when you choose to start it.** Adding the plugin does not

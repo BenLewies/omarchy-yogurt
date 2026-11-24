@@ -131,27 +131,25 @@ FocusScope {
                 }
                 Text{visible:!(root.library.recent||[]).length;Layout.fillWidth:true;text:strings.t(root.library.available?"empty":"library.unavailable");textFormat:Text.PlainText;color:root.muted;font.pixelSize:Style.font.body;wrapMode:Text.WordWrap}
             }
-            // Navigation first; preferences and exit are separated from daily actions.
+            // A balanced four-button toolbar: navigation, assistance, preferences, exit.
             RowLayout {
                 Layout.fillWidth:true;spacing:Style.space(7)
                 ToolbarButton {
-                    kind:"library";label:strings.t("toolbar.library");description:strings.t("library")
+                    Layout.fillWidth:true;kind:"library";label:strings.t("toolbar.library");description:strings.t("library")
                     onClicked:root.openApp()
                 }
                 ToolbarButton {
-                    kind:"ask";label:strings.t("toolbar.ask");description:strings.t("ask")
+                    Layout.fillWidth:true;kind:"ask";label:strings.t("toolbar.ask");description:strings.t("ask")
                     enabled:!!root.roleEntries.ask && root.roleEntries.ask.enabled
                     onClicked:root.request("ask")
                 }
-                Item {Layout.fillWidth:true}
-                Rectangle {Layout.preferredWidth:1;Layout.preferredHeight:Style.space(25);color:root.ink;opacity:.12}
                 ToolbarButton {
-                    kind:"settings";label:strings.t("toolbar.settings");description:strings.t("settings")
+                    Layout.fillWidth:true;kind:"settings";label:strings.t("toolbar.settings");description:strings.t("settings")
                     enabled:!!root.roleEntries.settings && root.roleEntries.settings.enabled
                     onClicked:root.request("settings")
                 }
                 ToolbarButton {
-                    kind:"quit";label:strings.t("toolbar.quit");description:strings.t("quit");destructive:true
+                    Layout.fillWidth:true;kind:"quit";label:strings.t("toolbar.quit");description:strings.t("quit");destructive:true
                     enabled:!!root.roleEntries.quit && root.roleEntries.quit.enabled
                     onClicked:{root.request("quit");root.dismiss()}
                 }

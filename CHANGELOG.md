@@ -3,7 +3,7 @@
 ## 1.1.0
 
 - Added a labelled vector-icon toolbar for Library, Ask, Settings and Quit.
-- Separated everyday navigation from preferences and exit controls.
+- Kept recording controls separate from an evenly spaced utility toolbar.
 - Added matching icons to recording, pause, resume and stop buttons.
 - Kept optional native actions accessible without a hidden More controls list.
 - Added native menu translations for the new toolbar actions.
