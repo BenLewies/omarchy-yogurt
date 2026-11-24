@@ -85,14 +85,11 @@ Omarchy.
 
 ### 2. Install Yogurt Bar
 
-Once this repository is public:
-
 ```bash
 omarchy plugin add https://github.com/BenLewies/omarchy-yogurt.git --enable
 ```
 
-While the repository is private, authenticate Git access to your GitHub account
-and use its SSH URL instead:
+Prefer SSH? Use this alternative:
 
 ```bash
 omarchy plugin add git@github.com:BenLewies/omarchy-yogurt.git --enable

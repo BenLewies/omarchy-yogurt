@@ -1,8 +1,7 @@
 # Store submission
 
-The package is prepared for the Omarchy plugin marketplace. The repository is
-intentionally private until the owner chooses to publish it. A private repository
-cannot be listed in the public store.
+This is the listing reference for Yogurt Bar. The official directory requires
+a public repository, automated validation and maintainer approval.
 
 ## Listing copy
 
