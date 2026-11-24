@@ -8,7 +8,7 @@ a public repository, automated validation and maintainer approval.
 **Name:** Yogurt Bar  
 **Repository:** https://github.com/BenLewies/omarchy-yogurt  
 **Plugin ID:** `bjl.yogurt`  
-**Version:** `1.1.1`
+**Version:** `1.2.0`
 **Category:** Productivity  
 **Suggested keywords:** Yogurt, meeting notes, recording
 
@@ -41,9 +41,13 @@ meeting titles can be hidden using the privacy setting.
    node tests/model.test.cjs
    python tests/check_package.py
    ```
-4. Publish the `v1.1.1` release with the existing changelog.
+4. Publish the `v1.2.0` release with the existing changelog.
 5. Open the submission link from the [official publishing guide](https://plugins.omarchy.org/publish.html)
    and submit the repository URL, listing copy and preview.
 
 The included GitHub workflow runs checks only. It does not publish the plugin,
 change visibility or submit anything on the owner's behalf.
+
+## Guided setup in 1.2.0
+
+The disconnected panel now offers Set up Yogurt. With explicit confirmation, it installs a pinned, checksum-verified official AppImage, creates a user launcher, and repairs a disabled tray setting after backing up preferences and requiring Yogurt to be closed. Existing installations are retained. Yogurt still handles first-run models, permissions and hardware checks. Ask maintainers to reassess manual-setup after reviewing this flow; the label is their decision.

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.0
+
+- Added Set up Yogurt to the disconnected panel: guided installation, tray repair and launch.
+- Pinned and checksum-verified the official Linux x86-64 AppImage; no administrator access or FUSE needed.
+- Preserved existing installations and backed up preferences before enabling a disabled tray icon.
+- Added setup tests for downloads, existing launchers, settings preservation and concurrent changes.
+
 ## 1.1.1
 
 - Fixed Hide meeting titles exposing upcoming calendar titles through optional native action buttons, tooltips and accessibility text.

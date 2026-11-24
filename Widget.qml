@@ -75,6 +75,17 @@ BarWidget {
         if (command.length) { launch.command=command; if(!launch.running)launch.running=true }
         else errorText=strings.t("launch.error")
     }
+    function setupYogurt() {
+        if (setup.running) return
+        var command=Model.safeCommand(setting("launchCommand", ["gtk-launch","yogurt"]))
+        if (!command.length) { errorText=strings.t("launch.error");return }
+        setup.command=["omarchy","launch","terminal","python3","-B",
+            Qt.resolvedUrl("setup.py").toString().replace("file://", ""),"--launcher-json",JSON.stringify(command)]
+            .concat(root.profileDirectory ? ["--profile",root.profileDirectory] : [])
+        setup.running=true
+        root.close()
+    }
+    Process { id:setup; onExited:exitCode=>{if(exitCode!==0)root.errorText=strings.t("setup.error")} }
     QsMenuOpener { id:nativeMenu; menu:root.trayItem ? root.trayItem.menu : null }
     Translations { id:strings; directory:Qt.resolvedUrl("i18n") }
     IpcHandler {
@@ -129,6 +140,7 @@ BarWidget {
             nativeEntries:root.nativeEntries;extraActions:Model.extraActions(root.nativeEntries, NativeLabels.labels);errorText:root.errorText
             onRequest:role=>root.invokeRole(role)
             onOpenApp:root.openYogurt()
+            onSetupApp:root.setupYogurt()
             onDismiss:root.close()
             onRefresh:root.refresh()
             onNativeAction:entry=>{ if(entry && entry.enabled && !entry.hasChildren){entry.triggered();refreshSoon.restart()} }

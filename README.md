@@ -76,14 +76,9 @@ existing system-tray menu.
 
 ## Up and running in minutes
 
-### 1. Have Yogurt ready
+### 1. Add Yogurt Bar
 
-Install [Yogurt for Linux](https://yogurt.so/), finish its initial setup and open
-it. Keep its **tray icon enabled**—that is how Yogurt Bar connects to the controls.
-You’ll also need an Omarchy Quattro desktop and Python 3, normally included with
-Omarchy.
-
-### 2. Install Yogurt Bar
+You’ll need Omarchy Quattro and Python 3 (included with Omarchy).
 
 ```bash
 omarchy plugin add https://github.com/BenLewies/omarchy-yogurt.git --enable
@@ -94,6 +89,35 @@ Prefer SSH? Use this alternative:
 ```bash
 omarchy plugin add git@github.com:BenLewies/omarchy-yogurt.git --enable
 ```
+
+### 2. Let setup do the work
+
+Click the Yogurt icon, then **Set up Yogurt** if the panel isn’t connected.
+The guided setup opens in a terminal and explains each step before asking you
+whether to continue:
+
+- **No Yogurt yet?** Download the official Linux AppImage, verify its SHA-256
+  checksum and add Yogurt to your app launcher. No administrator password needed.
+- **Already installed?** Keep your existing installation and launcher.
+- **Tray icon switched off?** Quit Yogurt when prompted. Setup backs up its
+  settings, enables the tray icon and preserves every other preference.
+- **Ready to connect?** Open Yogurt and complete its first-run checks and model
+  downloads. Yogurt Bar connects as soon as its tray appears.
+
+The bundled installer supports Linux x86-64 and installs official Yogurt 0.3.72.
+It never starts a recording, enables login autostart or replaces an existing app.
+Yogurt’s model downloads, hardware checks and permission choices happen in Yogurt.
+Already connected? You can skip setup entirely.
+
+You can also run guided setup directly:
+
+```bash
+python3 ~/.config/omarchy/plugins/bjl.yogurt/setup.py
+```
+
+Custom profile and launcher settings in the widget are passed to setup when you
+use the button. For a terminal invocation, use `--profile /path/to/Yogurt` and
+`--launcher-json '["/absolute/path/to/Yogurt.AppImage"]'` if needed.
 
 ### 3. Make it part of your day
 
@@ -189,6 +213,26 @@ stopping. Audio and notes still live in Yogurt.
 Yes. Install it, open the panel and browse the status. It doesn’t write to the
 Yogurt database or start recording on installation. Use **Open library** to
 return to the app.
+
+## What setup changes
+
+Only after you confirm, setup downloads from the official
+[FrigadeHQ/Yogurt release](https://github.com/FrigadeHQ/yogurt/releases/tag/v0.3.72).
+The URL and expected SHA-256 are pinned in `setup.py`; failed verification
+prevents installation. There are no background download checks by this plugin.
+Yogurt has its own update preferences.
+
+A new installation goes into `$XDG_DATA_HOME/yogurt-bar/` (normally
+`~/.local/share/yogurt-bar/`), with a `yogurt.desktop` launcher under
+`$XDG_DATA_HOME/applications/`. The launcher uses AppImage’s extract-and-run
+mode so FUSE is not required. If tray visibility needs changing, setup makes a
+private `settings.json.before-yogurt-bar-*` backup alongside Yogurt’s settings.
+It refuses to edit those settings while Yogurt is running.
+
+Removing the plugin leaves Yogurt and all recordings in place. To remove an app
+installed by this setup, quit Yogurt and remove only the `yogurt-bar` data folder
+and its `yogurt.desktop` launcher. To undo a tray change, use Yogurt’s settings
+or restore the backup while Yogurt is closed.
 
 ## Updates and removal
 

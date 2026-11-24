@@ -8,7 +8,7 @@
   "ready.detail": "Record the conversation. Let Yogurt take care of the notes.",
   "recording.detail": "Microphone and call audio · saved by Yogurt",
   "paused.detail": "Take a moment. Resume when you’re ready.",
-  "offline.detail": "Open Yogurt and enable its tray icon to connect your recording controls.",
+  "offline.detail": "Open Yogurt, or use guided setup to install it and connect its tray icon.",
   "start": "Start recording",
   "stop": "Stop & save",
   "pause": "Pause",
@@ -39,5 +39,8 @@
   "settings": "Open Yogurt settings",
   "quit": "Quit Yogurt",
   "toolbar.meeting": "Meeting action",
-  "toolbar.meeting.description": "Activate this action in Yogurt. Meeting titles are hidden."
+  "toolbar.meeting.description": "Activate this action in Yogurt. Meeting titles are hidden.",
+  "setup": "Set up Yogurt",
+  "setup.detail": "Install Yogurt or enable its tray connection with guided setup.",
+  "setup.error": "Could not open setup. Try the setup command in the README."
 }

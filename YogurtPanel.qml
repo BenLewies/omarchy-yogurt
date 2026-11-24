@@ -20,6 +20,7 @@ FocusScope {
     property var extraActions:[]
     signal request(string role)
     signal openApp()
+    signal setupApp()
     signal dismiss()
     signal refresh()
     signal nativeAction(var entry)
@@ -91,6 +92,11 @@ FocusScope {
                     enabled:!!(root.mode==="paused"?root.roleEntries.resume:root.roleEntries.pause)
                     onClicked:root.request(root.mode==="paused"?"resume":"pause")
                 }
+            }
+            Button {
+                visible:root.mode==="offline";Layout.fillWidth:true;focusable:true;bordered:true
+                text:strings.t("setup");tooltipText:strings.t("setup.detail")
+                onClicked:root.setupApp()
             }
             Text {
                 visible:root.mode!=="offline"&&!root.recording&&!root.roleEntries.start
